@@ -1,0 +1,54 @@
+body{font-size:10px;background-color:#4EB1BA;}
+#root{ float:left;}
+#hand{ color:red; float:left;}
+#tick{ color:red; float:right;}
+#header-products{ font-weight:bold;}
+#pink{ color:pink; }
+input{width: 25px;}
+input.markbox{ width:40px;}
+li {
+    width: 200px;
+    list-style-type: none;
+    padding: 6px 10px;
+}
+li:hover {
+    background: #EEE;
+} 
+.animate-show {
+    -webkit-transition: all linear 0.5s;
+    transition: all linear 0.5s;
+    opacity: 1;
+}
+
+.animate-show.ng-hide-add,
+.animate-show.ng-hide-remove {
+    display: inline-block !important;
+}
+.animate-show.ng-hide {
+    opacity: 0;
+}
+.red{
+  margin: 10px;
+  height:400px;
+  background-color:red;
+}
+
+.showme{ 
+display: none;
+}
+.showhim:hover .showme{
+
+ display : block;
+ background-color:black;
+}
+
+.spacer{
+}
+table{
+border-collapse: collapse;
+color:white;
+}
+div img {width: 30%;
+height:auto;}
+#final_cart{color:white;float:right;}
+#update_cart{}
