@@ -1,60 +1,96 @@
 <!doctype html>
 <html>
-</chead lang="en">
+<head lang="en">
     <meta charset="utf-8">
     <link rel="stylesheet" href="cart.css">
     <title>Order Page</title>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <script src="cart2.js"></script>
+<script type="text/javascript">
+/*  function openWin(str)
+  {
+    var myWindow=window.open('','','width=200,height=100, top=500');
+    myWindow.document.write("this is " + str);
+    
+ //   myWindow.document.close();
+myWindow.focus();
+//myWindow.print();
+//myWindow.close(); 
+
+*/
+}
+</script>
 </head>
 <body>
-<div> <img src="flowers.jpg"></div>
+<div> <img src="flowerhead.png"></div>
 
-<div id="preinvoice">
-<table><tr><td>SALESREP</td><td>BBANYAI</td><td>PRICING</td><td>A</td></tr><tr><td>COLLECTIONS</td><td>ITERAN</td><td>TERMS</td><td>15 days</td></tr></table>
-</div>
-
-      <div id="hand"><img src="green_hand_smaller.jpg"></div>
 <div ng-app="app">
     <div ng-controller="mainController as main">
-         <div id="tick"><button ng-click="editPerson( main.items )"><img src="tick_button_smaller.png"></button></div> 
-       <div id="plus"><button ng-click="main.updateQuantity(main.items)"><img src="green_click.jpg"></button> </div>
+<div id="preinvoice">
+     <table><tr><td>INCO TERMS</td><td><select ng-model="incoterms">
+<option ng-repeat="option in incoTermsOptions.availableOptions" value={{option.structure}}>{{option.name}}</option>
+</select></tr>
+<!--<tr><td>ORDER DATE</td><td> <textarea ng-model="todayDate" disabled></textarea></td></tr>--></table>
+</div>
+<div id="client">
+<textarea>CONSIGNEE CUSTOMER {{main.inco_terms_items}}YMS CO LTD 1-11-3 Iguchido IKEDA,OSAKA 533666, JAPAN  </textarea><textarea>BILL CUSTOMER</textarea>
+
+</div>
+<!-- TEMPLATE FORM  -->
+
+
+
+<!-- END OF TEMPLATE FORM -->
+<div>
+         <div id="tick"><button ng-click="editPerson( main.items )"><img src="tick_button_smaller_100.png"></button></div> 
+       <div id="plus"><button ng-click="main.updateQuantity(main.items)"><img src="green_click_100.jpg"></button> </div></div>
+<div id="handy"><img src="onefinger_100.png"></div>
       <!-- <div id="plus"><button ng-click="main.addToDatabase(cart.cartStorage.items)"><img src="green_click.jpg"></button> </div> -->
-        <div> <h2>MAIN CONTROLLER </h2>
+        <div> <!-- <h2>MAIN CONTROLLER </h2> -->
          <table>
 
-<th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th><select ng-model="solidboxchoice">
+<th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>
+<select ng-model="solidboxchoice" ng-change="updatePacking(solidboxchoice,incosort)">
                     <option ng-repeat="option in solidoptions.availableOptions" value={{option.id}}>{{option.name}}</option></select></th><th><input ng-model="mix_number"></th><th></th><th></th>
 <th></th><th></th><th></th>
                 <tr>
-                    <td>Inco Terms</td>
-                    <td>Specie</td>
+                    <td>Inco Terms<select ng-model="incosort" ng-change="updatePacking(solidboxchoice, incosort)"><option ng-repeat="option in incoTermsSearch.availableOptions">{{option.name}}</option></select></td>
+                    <td>Status<select><option ng-repeat="option in statusSearch.availableOptions">{{option.name}}</option></select></td>
+                    <td>Availability<select><option>2016</option><option>BLANKS</option></select></td>
+                    <td>Expire<select><option>2016</option><option>BLANKS</option></select></td>
+                    <td>Specie<select><option>CAL</option><option>CAL+</option><option>LA</option><option>LARK</option></select></td>
                     <td>Variety</td>
                     <td>Color</td>
                     <td>Grade</td>
                     <td>Stems/BU</td>
                     <td>Quality</td>
                     <td>Packing</td>
-                    <td>Price</td>
                     <td>INV</td>
                     <td>Solids</td>
                     <td>Mixes</td>
+                    <td>Solid Price</td>
+                    <td>Mix Price</td>
                   <!--  <td>Cost</td>  -->
-                    <td></td>
                     <td></td>
                     <td>Mark Solid</td>
                     <td>Mark Mix </td>
                 </tr>
-                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><select ng-model="mixboxchoice">
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><select ng-model="mixboxchoice">
                     <option ng-repeat="option in mixoptions.availableOptions" value={{option.id}}>{{option.name}}</option></select></td></tr>
                <form>
 
                 <!-- Add items to CART -->
                 
                 
-                <tr ng-repeat="item in main.items" ng-init="main.addToCart(item)" >
+                <!--<tr ng-repeat="item in main.items" ng-init="main.addToCart(item)" >-->
+                <tr ng-repeat="item in main.items | orderBy:'name'">
 
                     <td>{{item.inco_terms}}</td>
+                    <td ng-if="item.inco_terms=='FOB UIO'"><img src="airplane4.png"></td>
+                    <td ng-if="item.inco_terms=='FOB MIA (STOCK)'"><img src="airplanered4.gif"></td>
+                    <!--<td ng-if="checkAvailability(item.availability, item.expiration)">{{item.availability}}</td>-->
+                    <td>{{item.availability}}</td>
+                    <td>{{item.expiration}}</td>
                     <td>{{item.specie}}</td>
                     <td>{{item.name}}</td>
                     <td>{{item.color}}</td>
@@ -67,13 +103,12 @@
                     <td ng-if="item.length==45">{{item.forty_forty_five}}</td>
                     <td ng-if="item.length==55">{{item.fifty_fifty_five}}</td>
                     <td ng-if="item.length==70">{{item.seventy}}</td>
-                    <td><input ng-model="item.price"></td>
                     <td><input ng-model="item.inventory_quantity"></td> 
                     <td><input ng-model="item.quantity"></td>
               <!-- this arbitrary quantity will be replace by its own on db field as follows     <td><input ng-model="item.mixes"></td> -->
                     <td><input ng-model="item.mixed_quantity"> </td>
               <!--      <td><input ng-model="item.cost"></td> -->
-                    <td>
+              <!--      <td>
                         <button ng-click="main.increaseItemAmount(item)">
                             +
                         </button>
@@ -84,18 +119,20 @@
                         <button ng-click="main.addToCart(item)" ng-show="item.showAddToCart && !item.addedToCart || item.quantity >0" ng-model="total">
                           update 
                         </button>
-                    </td>
+                    </td> -->
+                    <td><input ng-model="item.price"></td>
+                    <td><input ng-model="item.price"></td>
                     <td></td>
-                    <td><input class="markbox" type="text" ng-model="item.marksolid"> </td> 
+                    <td><input  ng-model="item.marksolid"> </td> 
                     <td><input ng-model="item.markmix"> </td> 
                 </tr>  
              
                </form>
             </table>
 
- <!--           TOTAL MIX:{{getMixes()}}
-            TOTAL MIX COST: {{getMixesCost()}}
-            COST: {{getTotal()}} -->
+     <!--       TOTAL MIX:{{getMixes()}}
+            TOTAL MIX COST: {{getMixesCost()}} -->
+ <!--           COST: {{getTotal()}} -->
            <!-- TOTAL COST: {{getTotalCost()}} -->
   
    </div>
@@ -103,13 +140,13 @@
     <div ng-controller="cartController as cart">
         <h2>
 
-  CART CONTROLLER
+  <!--CART CONTROLLER -->
   </h2>
         <!--<div ng-show="showDetails">-->
         <div>
 
            <table>
-                <tr>
+              <!--  <tr>
                     <td>#Boxes</td>
                     <td>Product</td>
                     <td>BU/BOX</td>
@@ -117,29 +154,30 @@
                     <td>Grade</td>
                     <td>ST/BU</td>
                     <td>Price/ST</td>
-                   <!-- <td>Quantity</td> -->
+                   <!-- <td>Quantity</td> 
                     <td>Total</td>
-                </tr>
+                </tr> -->
 
-                <tr>
+              <!--  <tr>
 
-                     <!--<td>{{mix_number}}</td><td><div class="showhim">Assorted 30-35cm 10ST-SGOL<div class="showme" ng-repeat="item in mixed_items" ng-if="item.mixes>0"><li>{{item.mixes}}{{item.name}}-->
+                     <!--<td>{{mix_number}}</td><td><div class="showhim">Assorted 30-35cm 10ST-SGOL<div class="showme" ng-repeat="item in mixed_items" ng-if="item.mixes>0"><li>{{item.mixes}}{{item.name}}
                      <td>{{mix_number}}</td><td><div class="showhim">Assorted 30-35cm 10ST-SGOL<div class="showme" ng-repeat="item in mixed_items" ng-if="item.mixed_quantity>0"><li>{{item.mixed_quantity}}{{item.name}}
                      {{item.length}}cms{{item.cost}}{{getMixesCost()}}</li></div></div><div class="spacer"></div>                 </td><td></td><td></td><td></td><td></td><td></td><td>${{getMixesCost()}} </td>
 
-                </tr>
-                <tr ng-repeat="item in cart.cartStorage.items" ng-show="item.quantity>0 ">
+                </tr> -->
+                <!--<tr ng-repeat="item in cart.cartStorage.items" ng-show="item.quantity>0 ">-->
+              <!--  <tr ng-repeat="item in main.items" ng-show="item.quantity>0 ">
                     <td>{{item.quantity}}</td>
                     <td>{{item.name}}</td>
                     <td>{{item.boxtype}}</td>
                     <td>{{item.color}}</td>
                     <td>{{item.length}}</td>
                     <td>{{item.stems}}</td>
-                    <td>{{item.price | currency}}</td>
+                    <td>{{item.price | currency}}</td> -->
                    <!-- <td>{{item.quantity}}</td> -->
-                    <td>${{item.cost}}</td>
-                   <!-- <td>{{getCost(item)}}</td>
-                    <td>{{getTotalCost(item)}}</td> -->
+                   <!-- <td>${{item.cost}}</td>
+                    <td>{{getCost(item)}}</td>
+                    <td>{{getTotalCost(item)}}</td> 
                     <td>
                         <button ng-click="cart.increaseItemAmount(item)">
                             +
@@ -151,16 +189,23 @@
                             Remove from Cart
                         </button>
                     </td>
-                </tr>
-                <tr><td></td><td></td><td></td><td></td><td></td><td></td><td>$</td><td> {{getTotal()}}</td></td><td>{{item.marksolid}}</td></tr>
+                </tr> -->
+               <!-- <tr><td></td><td></td><td></td><td></td><td></td><td></td><td>$</td>-->
+<!-- TEST THIS PART FOR COST<td> {{getTotal()}}</td> 
+</td>
+<td>{{item.marksolid}}</td></tr> -->
                 
             </table>
 <div id="update_cart">
- <h2>UPDATE CART PRODUCTS </h2>
-<table><th></th><th>product</th><th>price</th>
-<tr ng-repeat="temp in main.temp_items"><td>{{temp.productid}}</td>
-<td>{{temp.name}}</td>
-<td><input value="{{temp.price}}"></td><td><button ng-click="cart.updateFinalShoppingCart(temp)">modify product</button></td></tr></table>
+ <h2>PRE-INVOICE </h2>
+<table><th>#BOXES</th><th>BOXTYPE</th><th>PRODUCT</th><th>BU/BOX</th><th>STEMS/BOX</th><th>PRICE/ST</th><th>TOTAL</th><th>BOX MARKING</th>
+<tr ng-repeat="temp in main.temp_items"><td>{{temp.quantity}}</td><td>1/8 CAL</td>
+<td><a href="" ng-if="temp.productid==0" ng-click="openWin(temp.productid,temp.tempcartid)" >{{temp.name}}</a><a ng-if="temp.productid!=0" >{{temp.name}}</a></td>
+<td>{{temp.packing}}</td><td>{{temp.stembox}}</td><td><input value="{{temp.price}}"></td><td>{{temp.cost}}</td><td>{{temp.marksolid}}</td><td><button ng-click="cart.updateFinalShoppingCart(temp)">-</button></td>
+<td ng-init="main.Total = (main.Total-0) + (temp.cost-0)"></td></tr>
+<tr><td>-</td></td></tr>
+<tr><td></td><td></td><td></td><td><span>{{main.getBunchBoxSum()}}</span></td><td><span>{{main.getStemBoxSum()}}</span></td><td></td><td><span>${{main.Total}}</span></td></tr>
+</table>
 </div>
         </div>
     <!--    <div id="pink">{{printFinalProducts(cart.cartStorage.items)}}  </div>-->
@@ -172,18 +217,20 @@
  {{d.name}}
 </div>
     </div>-->
-<div id="final_cart">
+<!--<div id="final_cart">
  <h2>FINAL CART PRODUCTS </h2>
 <table ng-repeat="temp in main.temp_items">
 <tr><td>{{temp.productid}}</td>
 <td>{{temp.name}}</td>
 <td>{{temp.price}}</td></tr></table>
-</div>
+</div> -->
 <!--<div> <button ng-click="addToDatabase(cart.cartStorage.items)">Add Cart Products to Temp Database </button></div> -->
 
 <div ng-repeat="p in main.packing">{{p}}</div>
 
-
 </div>
+
+<!--{{getMixesCost()}} -->
+
 </body>
 </html>
